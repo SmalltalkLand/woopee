@@ -6,7 +6,7 @@ export function transmute<T,U>(x: T): U{
 export let one: 1 = transmute(Math.pow(Math.random(),zero))
 export function pipe2<T>(a: ((y: (z: T) => T) => ((z: T) => T))[],i: ((x: T) => T)): (y: T) => T{
     if(a.length == 1)return (p => p(i))(a.pop() || transmute(() => {throw "error";return transmute(undefined);}));
-    return (a.pop() || transmute(() => {throw "error";return transmute(undefined);}))(pipe2(a,i))
+    return (p => R.pipe(pipe2(a,i),p))(a.pop() || transmute(() => {throw "error";return transmute(undefined);}))
 }
 export function transmute_with<T,U>(fn: (v: any) => any,val: T): U{
     return transmute(fn(transmute(val)))
