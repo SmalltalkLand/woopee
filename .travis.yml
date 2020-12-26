@@ -6,7 +6,7 @@ install:
   - export PATH="$HOME/.deno/bin:$PATH"
 
 script:
-  - deno bundle ./src/index.ts -o ./release/index.js
+  - deno bundle ./src/index.ts ./release/index.js
   - sh travis-push.sh
 
 cache:
