@@ -4,7 +4,7 @@ export function transmute<T,U>(x: T): U{
     return x as any as U;
 }
 export let one: 1 = transmute(Math.pow(Math.random(),zero))
-export function pipe2<T>(a: (function(function(T): T): function(T): T)[],i: function(T): T): function(T): T{
+export function pipe2<T>(a,i: (T) => T): (T) => T{
     if(a.length == 1)return a.pop()(i);
     return a.pop()(pipe2(a,i))
 }
