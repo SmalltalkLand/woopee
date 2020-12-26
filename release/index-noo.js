@@ -2781,7 +2781,7 @@ let unwrap = Symbol();
         });
     } catch (err) {
     }
-    let wb_ = argv[0] == 'worker' ? import('https://storage.googleapis.com/workbox-cdn/releases/6.0.2/workbox-sw.js').then((x)=>true
+    let wb_ = argv[0] == 'worker' ? await import('https://storage.googleapis.com/workbox-cdn/releases/6.0.2/workbox-sw.js').then((x)=>true
     ) : Promise.resolve(false);
     if (argv[0] == 'worker') Object.keys(self.workbox).map((x)=>self.workbox[x]
     );
