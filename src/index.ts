@@ -9,7 +9,7 @@ fw2  = argv[0] == 'worker' ? undefined : w({Worker: transmute(fw),prepend: '',ar
 }catch(err){
 
 }
-let wb_ = argv[0] == 'worker' ? await import('https://storage.googleapis.com/workbox-cdn/releases/6.0.2/workbox-sw.js').then(x => true) : Promise.resolve(false);
+let wb_ = argv[0] == 'worker' ? Promise.resolve(importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.0.2/workbox-sw.js')).then(x => true) : Promise.resolve(false);
 if(argv[0] == 'worker')Object.keys((self as any).workbox).map(x => (self as any).workbox[x]);
 let wb = await wb_;
 if(wb)(self as any).workbox.recipies.offlineFallback();
