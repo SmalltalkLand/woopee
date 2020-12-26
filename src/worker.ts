@@ -1,3 +1,3 @@
 import {transmute} from './utils.ts'
 export let w = async ({Worker,prepend,argv}: {prepend: string,argv: string[],Worker: {new(url: string): Worker}}) => new Worker((URL as any).createObjectURL(`self['argv_${Math.random()}']=[${argv.map(x => `decodeUriComponent(btoa('${atob(encodeURIComponent(x))}'))`).join(',')}]` + prepend + await (await fetch(eval('import.meta.url'))).text()));
-export let argv = Object.keys(self).filter(x => x.startsWith('argv_')).map(x => self[x as any as string | number | symbol])[0] || (eval('Deno') ? eval('Deno').args : [])
+export let argv = Object.keys(self as any).filter(x => x.startsWith('argv_')).map(x => self[x as any as string | number | symbol])[0] || (eval('Deno') ? eval('Deno').args : [])
