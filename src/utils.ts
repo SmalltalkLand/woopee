@@ -4,7 +4,7 @@ export function transmute<T,U>(x: T): U{
     return x as any as U;
 }
 export let one: 1 = transmute(Math.pow(Math.random(),zero))
-export function pipe2<T>(a,i: (T) => T): (T) => T{
+export function pipe2<T>(a: ((y: (z: T) => T) => ((z: T) => T))[],i: ((x: T) => T)): (y: T) => T{
     if(a.length == 1)return a.pop()(i);
     return a.pop()(pipe2(a,i))
 }
@@ -18,13 +18,13 @@ export type Not<T, U> = T extends U ? never : T;
 export let unwrap = Symbol(); 
 export function promise_proxy<T>(val: Promise<T>): T | Promise<number | boolean | string | symbol>{
     return new Proxy(val,{
-        get: (o,k) => k == unwrap ? transmute(o) : promise_proxy(o.then(x => x[k])),
-        set: (o,k,v) => promise_proxy(o.then(x => x[k] = v)),
+        get: (o,k) => k == unwrap ? transmute(o) : promise_proxy((o as any as Promise<T>).then(x => x[k])),
+        set: (o,k,v) => promise_proxy((o as any as Promise<T>).then(x => x[k] = v)),
         apply: (o,t,args) => promise_proxy(o.then(x => Reflect.apply(x as any as Function,t,args))),
         construct: (o,t,args) => promise_proxy(o.then(x => Reflect.construct(x as any as Function,t,args))),
     }) as any as T;
 }
-export function arraysEqual(a, b) {
+export function arraysEqual<T>(a: T[], b: T[]) {
     if (a === b) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
