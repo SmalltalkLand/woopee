@@ -1,11 +1,12 @@
 language: sh
-
+git:
+  depth: false
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh
   - export PATH="$HOME/.deno/bin:$PATH"
 
 script:
-  - deno bundle ./index.ts
+  - deno bundle ./src/index.ts -o ./release/index.js
   - sh travis-push.sh
 
 cache:
