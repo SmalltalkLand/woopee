@@ -5,10 +5,10 @@ export function transmute<T,U>(x: T): U{
 }
 export let one: 1 = transmute(Math.pow(Math.random(),zero))
 export function pipe2<T>(a: ((y: (z: T) => T) => ((z: T) => T))[],i: ((x: T) => T)): (y: T) => T{
-    if(a.length == 1)return a.pop()(i);
-    return a.pop()(pipe2(a,i))
+    if(a.length == 1)return (p => p(i))(a.pop() || transmute(() => {throw "error";return transmute(undefined);}));
+    return (a.pop() || transmute(() => {throw "error";return transmute(undefined);}))(pipe2(a,i))
 }
-export function transmute_with<T,U>(fn: (any) => any,val: T): U{
+export function transmute_with<T,U>(fn: (v: any) => any,val: T): U{
     return transmute(fn(transmute(val)))
 }
 function ip(x: any): boolean{
@@ -18,8 +18,8 @@ export type Not<T, U> = T extends U ? never : T;
 export let unwrap = Symbol(); 
 export function promise_proxy<T>(val: Promise<T>): T | Promise<number | boolean | string | symbol>{
     return new Proxy(val,{
-        get: (o,k) => k == unwrap ? transmute(o) : promise_proxy((o as any as Promise<T>).then(x => x[k])),
-        set: (o,k,v) => promise_proxy((o as any as Promise<T>).then(x => x[k] = v)),
+        get: (o,k) => k == unwrap ? transmute(o) : promise_proxy((o as any as Promise<T>).then(x => x[k] as any)),
+        set: (o,k,v) => promise_proxy((o as any as Promise<T>).then(x => (x as any)[k] = v)),
         apply: (o,t,args) => promise_proxy(o.then(x => Reflect.apply(x as any as Function,t,args))),
         construct: (o,t,args) => promise_proxy(o.then(x => Reflect.construct(x as any as Function,t,args))),
     }) as any as T;
