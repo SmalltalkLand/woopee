@@ -1,12 +1,14 @@
-language: sh
+language: nodejs
 git:
   depth: false
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh
   - export PATH="$HOME/.deno/bin:$PATH"
+  - npm i -g javascript-obfuscator
 
 script:
-  - deno bundle ./src/index.ts ./release/index.js
+  - deno bundle ./src/index.ts ./release/index-noo.js
+  - javascript-obfuscator ./release/index-noo.js --output ./release/index.js --options-preset medium-obfuscation
   - sh travis-push.sh
 
 cache:
