@@ -1,7 +1,7 @@
 import {w,argv} from './worker.ts'
 import {R,hyper,$,LzString} from './deps.ts'
 import {promise_proxy,unwrap,transmute} from './utils.ts'
-let fw = new Proxy(class{},{construct: (o,args,t) => (eval('navigator').serviceWorker.register(args[0]).then((x: any) => transmute(eval('navigator').serviceWorker).x = x), eval('navigator').serviceWorker)});
+let fw = new Proxy(class{},{construct: (o,args,t) => (eval('navigator').serviceWorker.register(args[0]).then((x: any) => eval('navigator').serviceWorker.x = x), eval('navigator').serviceWorker)});
 let fw2;
 try{
 fw2  = argv[0] == 'worker' ? undefined : w({Worker: transmute(fw),prepend: '',argv: ['worker']});
