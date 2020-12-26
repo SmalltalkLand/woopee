@@ -1,6 +1,7 @@
 import {w,argv} from './worker.ts'
 import {R,hyper,$,LzString} from './deps.ts'
 import {promise_proxy,unwrap,transmute} from './utils.ts'
+(async () => {
 let fw = new Proxy(class{},{construct: (o,args,t) => (eval('navigator').serviceWorker.register(args[0]).then((x: any) => eval('navigator').serviceWorker.x = x), eval('navigator').serviceWorker)});
 let fw2;
 try{
@@ -24,3 +25,4 @@ if(argv[0] !== "nohash"){
 
     }
 }
+})()
